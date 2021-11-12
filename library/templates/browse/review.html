@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<main id="main">
+    <header>
+        <h1>{{book.title}}</h1>
+        <br>
+        <h3 style="text-align: center; color: grey;">by {{book.authors[0].full_name}}</h3>
+
+    </header>
+
+    <div style="clear:both">
+        <br>
+        <div style="text-align: center; ">
+            <img src={{book.cover_url}} alt="book image">
+        </div>
+        <div class="form-wrapper">
+            <form action="{{handler_url}}" method="post">
+                {{form.book_id}}
+                <!-- Need to include this hidden field as it tracks the article being commented. -->
+                {{form.csrf_token}}
+                <!-- Need to include this token - Flask WTForms requires it. -->
+                <br>
+                <div class="form-field">
+                    {{form.review.label}}
+                    </br>
+                    {{form.review(size = 100, placeholder="Type your comment", class="textarea", cols="50", rows="6",
+                    wrap="hard")}}
+                    {{form.rating.label}}
+                    <div style = "width: 20%">
+                    {{form.rating}}
+                    </div>
+
+                    {% if form.review.errors %}
+                    <ul class="errors">
+                        {% for error in form.review.errors %}
+                        <li>{{error}}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                {{ form.submit }}
+            </form>
+        </div>
+        <!--
+        <div style="clear:both">
+            <p>{{reviews}}</p>
+            {% for review in reviews %}
+            <p>{{review.review_text}}, by {{review.user_name}}, {{review.timestamp}}</p>
+            {% endfor %}
+        </div>
+        -->
+        </article>
+</main>
+{% endblock %}

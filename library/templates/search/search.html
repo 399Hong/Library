@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+{% block content %}
+<main id="main">
+    <h1 style="white-space: pre-line">{{message}}</h1>
+    <br>
+    {% for book in books %}
+
+    <a href = '{{url_for("browse_bp.viewBook", id = book.book_id, show = "False")}}'>
+        <h3>{{loop.index}}. {{book.title}} </h3>
+        <p style="color: grey;">&nbsp;&nbsp;&nbsp;&nbsp; Written by{% for author in book.authors%}
+            {% if loop.index != loop|length %}
+            {{author.full_name +',' }}
+            {% else %}
+            {{author.full_name}}
+            {% endif%}
+
+            {% endfor %}
+        </p>
+        <p style="color: grey;">&nbsp;&nbsp;&nbsp;&nbsp; 
+            {% if book.release_year is none and book.publisher.name == "N/A"%}
+            {% elif book.release_year is none %}
+                Published by {{book.publisher.name}}
+            {% elif book.publisher.name == "N/A" or book.publisher == none %}
+                Published in {{book.release_year}}
+            {% else %}
+                Published in {{book.release_year}} by {{book.publisher.name}}
+            {% endif %}
+        </p>
+    </a>
+
+
+    </h3>
+    {% endfor %}
+
+</main>
+{% endblock %}

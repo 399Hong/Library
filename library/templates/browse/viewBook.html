@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+{% block content %}
+<main id="main">
+    <h1>{{book.title}}</h1>
+    <br>
+    <h3 style="text-align: center; color: grey;">by {{book.authors[0].full_name}}</h3>
+    <br>
+    <div style="text-align: center; ">
+        {% if book.cover_url is not none %}
+        <img src={{book.cover_url}} alt="Book cover not found">
+        {% endif %}
+    </div>
+    <p style="text-align: justify; text-justify:inter-word;">{{book.description}}</p>
+    <!-- Review section-->
+
+    <div style="float:right">
+        {% if reviews|length > 0 and not show %}
+        <button class="btn-general" onclick="location.href='{{ showReviewUrl }}'">{{ reviews|length }} Reviews</button>
+        {% endif %}
+        <button class="btn-general" onclick="location.href='{{newCommentUrl}}'">Add Review</button>
+    </div>
+    {% if show %}
+
+    <div style="clear:both">
+        <br>
+        <h3>Reviews:</h3>
+        <hr>
+        {% for review in reviews %}
+        <div style="display: flex; justify-content: space-between;">
+            <p style="font-size:13px;"> Date: {{review.timestamp}}</p>
+            <p style="font-size:13px;margin-left:40%">Rating from {{review.userName}}:</p>
+            <progress value="{{review.rating}}" max="5" class = "rating" style="margin-top: 5px;">  </progress>
+        </div>
+      
+        <hr>
+        
+        <p>{{review.review_text}}</p>
+      
+        <br>
+        <hr>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+</main>
+{% endblock %}
